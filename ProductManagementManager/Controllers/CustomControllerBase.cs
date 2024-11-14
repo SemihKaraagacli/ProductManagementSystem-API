@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProductManagementManager.Models;
-using System.Net;
+using ProductManagementManager.Models.Services;
 
 namespace ProductManagementManager.Controllers
 {
@@ -13,13 +12,20 @@ namespace ProductManagementManager.Controllers
         {
             if (result.IsFail)
             {
-                if (result.Status == HttpStatusCode.NotFound)
+                //if (result.Status == HttpStatusCode.NotFound)
+                //{
+                //    return NotFound();
+                //}
+
+                var problemDetails = new ProblemDetails()
                 {
-                    return NotFound();
-                }
+                    Type = "https://tools.ietf.org/html/rfc9110#section-15.6.1",
+                    Title = "Bir hata oluştu.",
+                    Status = (int)result.Status,
+                    Detail = result.Errors.First()
+                };
 
-
-                return new ObjectResult(result.Errors)
+                return new ObjectResult(problemDetails)
                 {
                     StatusCode = (int)result.Status
                 };
@@ -36,13 +42,19 @@ namespace ProductManagementManager.Controllers
         {
             if (result.IsFail)
             {
-                if (result.Status == HttpStatusCode.NotFound)
+                //if (result.Status == HttpStatusCode.NotFound)
+                //{
+                //    return NotFound();
+                //}
+                var problemDetails = new ProblemDetails()
                 {
-                    return NotFound();
-                }
+                    Type = "https://tools.ietf.org/html/rfc9110#section-15.6.1",
+                    Title = "Bir hata oluştu.",
+                    Status = (int)result.Status,
+                    Detail = result.Errors.First()
+                };
 
-
-                return new ObjectResult(result.Errors)
+                return new ObjectResult(problemDetails)
                 {
                     StatusCode = (int)result.Status
                 };
